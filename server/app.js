@@ -27,6 +27,7 @@ app.use('/', async(req, res) => {
   console.log('Original URL ', req.originalUrl);
   const data = await new Promise(async (resolve) => {
     const proxyTo = `https://cdn-api.co-vin.in${req.originalUrl}`;
+    console.log('Proxying to', proxyTo);
     resolve(await axios(proxyTo).then((res) => res.data));
   })
   res.send(data);
