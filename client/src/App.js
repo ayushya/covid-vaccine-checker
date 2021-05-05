@@ -9,6 +9,8 @@ import {
 } from 'ag-grid-react';
 import moment from 'moment';
 
+import { CircularProgress } from '@material-ui/core';
+
 import {
   DEFAULT_AGE,
   DEFAULT_DURATION,
@@ -136,6 +138,10 @@ const App = () => {
                 )
               }
             </AgGridReact>
+          </div> :
+          districtsSelected.length ?
+          <div style={{ height: 'calc(100vh - 72px)', width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <CircularProgress style={{ alignSelf: 'center' }} />
           </div> :
           null
       }
