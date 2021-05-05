@@ -46,7 +46,7 @@ const App = () => {
     durationSelected, setDurationSelected
   };
 
-  const dateMap = Array.apply(null, new Array(7)).map((curr, index) => {
+  const dateMap = Array.apply(null, new Array(7 * 4 * parseInt(durationSelected))).map((curr, index) => {
     return moment().add(index, 'days').format('DD-MM-YYYY');
   });
 

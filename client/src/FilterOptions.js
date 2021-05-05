@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 
 import axios from 'axios';
-import moment from 'moment';
 
 import { makeStyles } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
@@ -10,10 +9,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
 import {
-  GET_CENTERS_BY_DISTRICT,
   GET_DISTRICTS,
   GET_STATES,
 } from './constants';
+import { fetchCenters } from './utility';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -62,49 +61,15 @@ const FilterOptions = (props) => {
 
   const handleDistrictChange = (event) => {
     const newDistrictSelectedValue = event.target.value;
-    setDistrictSelected(event.target.value);
-    axios.get(`${GET_CENTERS_BY_DISTRICT}`, {
-      params: {
-        district_id: newDistrictSelectedValue,
-        date: moment().format('DD-MM-YYYY')
-      }
+    setDistrictSelected(newDistrictSelectedValue);
+    new Promise(async (resolve) => {
+      const [rawCenterData, newVaccines, newAgeGroups, modifiedCenters] = await fetchCenters([newDistrictSelectedValue], durationSelected);
+      setRawCenters(rawCenterData);
+      setVaccines(newVaccines);
+      setAgeGroup(newAgeGroups);
+      setCenters(modifiedCenters);
+      resolve();
     })
-      .then((response) => {
-        const newCenters = response.data.centers;
-        setRawCenters(newCenters);
-        const newVaccines = new Set();
-        const newAgeGroups = new Set();
-        const modifiedCenters = newCenters.map((centerItem) => {
-          let availability = {
-            total: 0,
-
-          };
-          centerItem.sessions.forEach(item => {
-            const minAgeLimit = item.min_age_limit;
-            const availableNow = item.available_capacity;
-            const vaccineName = item.vaccine;
-
-            newVaccines.add(vaccineName);
-            newAgeGroups.add(minAgeLimit);
-            availability[minAgeLimit] = {
-              ...availability[minAgeLimit],
-              [vaccineName]: {
-                ...(availability[minAgeLimit]?.[vaccineName]),
-                [item.date]: availableNow,
-              },
-            }
-
-            const vaccineTotalKey = `${vaccineName}_total`;
-            availability[minAgeLimit][vaccineTotalKey] = availability[minAgeLimit][vaccineTotalKey] ? availability[minAgeLimit][vaccineTotalKey] + availableNow : availableNow;
-            availability.total += availableNow;
-          });
-          centerItem['availability'] = availability;
-          return centerItem;
-        })
-        setVaccines(newVaccines);
-        setAgeGroup(newAgeGroups);
-        setCenters(modifiedCenters);
-      });
   };
 
   const handleVaccineChange = (event) => {
