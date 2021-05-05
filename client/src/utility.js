@@ -29,7 +29,7 @@ const formatData = (newCenters) => {
   const newVaccines = new Set();
   const newAgeGroups = new Set();
 
-  const modifiedCenters = newCenters.map((centerItem) => {
+  const modifiedCenters = mergeDataByCenter(newCenters).map((centerItem, index) => {
     let availability = {
       total: 0,
     };
@@ -59,4 +59,17 @@ const formatData = (newCenters) => {
   });
 
   return [newCenters, newVaccines, newAgeGroups, modifiedCenters];
+}
+
+const mergeDataByCenter = (newCenters) => {
+  const centerIdMap = {};
+  const mergedCenters = [];
+
+  newCenters.forEach((centerItem, index) => {
+    if (centerIdMap[centerItem.center_id] === undefined) {
+      centerIdMap[centerItem.center_id] = index;
+      mergedCenters.push(centerItem);
+    }
+  });
+  return mergedCenters;
 }
