@@ -1,4 +1,5 @@
 import axios from 'axios';
+import deepmerge from 'deepmerge';
 import moment from 'moment';
 
 const { GET_CENTERS_BY_DISTRICT } = require("./constants");
@@ -66,9 +67,13 @@ const mergeDataByCenter = (newCenters) => {
   const mergedCenters = [];
 
   newCenters.forEach((centerItem, index) => {
-    if (centerIdMap[centerItem.center_id] === undefined) {
-      centerIdMap[centerItem.center_id] = index;
+    const centerIdIndex = centerIdMap[centerItem.center_id];
+    if (centerIdIndex === undefined) {
       mergedCenters.push(centerItem);
+      centerIdMap[centerItem.center_id] = mergedCenters.length - 1;
+    } else {
+      const oldData = mergedCenters[centerIdIndex];
+      mergedCenters[centerIdIndex] = deepmerge(oldData, centerItem);
     }
   });
   return mergedCenters;
