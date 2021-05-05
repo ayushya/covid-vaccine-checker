@@ -94,7 +94,13 @@ const App = () => {
 
             newVaccines.add(vaccineName);
             newAgeGroups.add(minAgeLimit);
-            availability[minAgeLimit] = {[item.date]: availableNow};
+            availability[minAgeLimit] = {
+              ...availability[minAgeLimit],
+              [vaccineName]: {
+                ...(availability[minAgeLimit]?.[vaccineName]),
+                [item.date]: availableNow,
+              },
+            }
             
             const vaccineTotalKey = `${vaccineName}_total`;
             availability[minAgeLimit][vaccineTotalKey] = availability[minAgeLimit][vaccineTotalKey] ? availability[minAgeLimit][vaccineTotalKey] + availableNow : availableNow;
@@ -119,6 +125,11 @@ const App = () => {
     setAgeGroupSelected(newStateSelectedValue);
   }
 
+  const rowDataFilter = (node) => {
+    const total  = node.data.availability[ageGroupSelected]?.[`${vaccineSelected}_total`];
+    return total !== undefined
+  }
+
   const quantityFormatter = ({value}) => {
     switch (value) {
       case undefined: {
@@ -136,7 +147,8 @@ const App = () => {
   const quantityStyle = ({ value }) => {
     const commonStyles = {
       textAlign: 'center',
-      fontWeight: '700'
+      fontWeight: '700',
+      border: '1px solid rgb(186, 191, 199)'
     };
     switch (value) {
       case undefined: {
@@ -239,6 +251,8 @@ const App = () => {
               }}
               defaultColGroupDef={{ marryChildren: true }}
               animateRows={true}
+              isExternalFilterPresent={() => true}
+              doesExternalFilterPass={rowDataFilter}
               rowData={centers}>
               <AgGridColumn field="pincode" sortable={true} filter={true} pinned="left"></AgGridColumn>
               <AgGridColumn field="name" sortable={true} filter={true} width={200} pinned="left"></AgGridColumn>
@@ -248,7 +262,7 @@ const App = () => {
                 field={`availability.${ageGroupSelected}.${vaccineSelected}_total`}
                 sortable={true}
                 filter={false}
-                width={100}
+                width={120}
                 pinned="left"
                 valueFormatter={quantityFormatter}
                 cellStyle={quantityStyle}
@@ -258,7 +272,7 @@ const App = () => {
                   <AgGridColumn
                     key={index}
                     headerName={dateItem}
-                    field={`availability.${ageGroupSelected}.${dateItem}`}
+                    field={`availability.${ageGroupSelected}.${vaccineSelected}.${dateItem}`}
                     sortable={true}
                     filter={false}
                     width={130}

@@ -1,4 +1,4 @@
-export const SERVER_API_URL = 'http://localhost:3000/api/v2';
+export const SERVER_API_URL = 'https://cdn-api.co-vin.in/api/v2';
 
 export const GET_STATES = `${SERVER_API_URL}/admin/location/states`;
 
