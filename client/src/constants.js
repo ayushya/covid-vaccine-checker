@@ -9,3 +9,5 @@ export const GET_CENTERS_BY_DISTRICT = `${SERVER_API_URL}/appointment/sessions/p
 export const DEFAULT_VACCINE = 'COVAXIN';
 
 export const DEFAULT_AGE = 18;
+
+export const DEFAULT_DURATION = 1;

@@ -39,6 +39,7 @@ const FilterOptions = (props) => {
     vaccineSelected, setVaccineSelected,
     ageGroup, setAgeGroup,
     ageGroupSelected, setAgeGroupSelected,
+    durationSelected, setDurationSelected
   } = props;
 
   useEffect(() => {
@@ -115,6 +116,10 @@ const FilterOptions = (props) => {
     setAgeGroupSelected(newStateSelectedValue);
   }
 
+  const handleDurationChange = (event) => {
+    const newStateSelectedValue = event.target.value;
+    setDurationSelected(newStateSelectedValue);
+  }
 
   return (
     <div>
@@ -185,6 +190,23 @@ const FilterOptions = (props) => {
               {
                 Array.from(ageGroup)?.map((ageGroupItem, index) => <MenuItem key={index} value={ageGroupItem}>{ageGroupItem}</MenuItem>)
               }
+            </Select>
+          </FormControl> :
+          null
+      }
+      {
+        vaccines && ageGroup ?
+          <FormControl variant="outlined" className={classes.formControl}>
+            <InputLabel id="demo-simple-select-outlined-label">Duration</InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              value={durationSelected}
+              onChange={handleDurationChange}
+              label="Duration"
+            >
+              <MenuItem value="1">1 Month</MenuItem>
+              <MenuItem value="2">2 Month</MenuItem>
             </Select>
           </FormControl> :
           null

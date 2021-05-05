@@ -11,6 +11,7 @@ import moment from 'moment';
 
 import {
   DEFAULT_AGE,
+  DEFAULT_DURATION,
   DEFAULT_VACCINE,
 } from './constants';
 import FilterOptions from './FilterOptions';
@@ -29,6 +30,8 @@ const App = () => {
   const [ageGroup, setAgeGroup] = React.useState(null);
   const [ageGroupSelected, setAgeGroupSelected] = React.useState(DEFAULT_AGE);
 
+  const [durationSelected, setDurationSelected] = React.useState(DEFAULT_DURATION);
+
   const propsToPass = {
     states, setStates,
     stateSelected, setStateSelected,
@@ -40,6 +43,7 @@ const App = () => {
     vaccineSelected, setVaccineSelected,
     ageGroup, setAgeGroup,
     ageGroupSelected, setAgeGroupSelected,
+    durationSelected, setDurationSelected
   };
 
   const dateMap = Array.apply(null, new Array(7)).map((curr, index) => {
