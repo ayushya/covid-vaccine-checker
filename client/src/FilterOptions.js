@@ -13,6 +13,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
 import {
+  DEFAULT_AGE,
+  DEFAULT_VACCINE,
   GET_DISTRICTS,
   GET_STATES,
 } from './constants';
@@ -53,42 +55,63 @@ const FilterOptions = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const resetValuesOnStateChange = () => {
+    setDistricts(null);
+    setDistrictsSelected([]);
+    resetValuesOnDistrictChange();
+  }
+
+  const resetValuesOnDistrictChange = () => {
+    setRawCenters(null);
+    setCenters(null);
+    setVaccines(null);
+    setVaccineSelected(DEFAULT_VACCINE);
+    setAgeGroup(null);
+    setAgeGroupSelected(DEFAULT_AGE);
+  }
+
   const handleStateChange = (event) => {
     const newStateSelectedValue = event.target.value;
     setStateSelected(newStateSelectedValue);
-    setDistricts(null);
+    resetValuesOnStateChange();
     axios.get(`${GET_DISTRICTS}/${newStateSelectedValue}`)
       .then((response) => {
         setDistricts(response.data.districts);
       });
   };
 
-  const handleDistrictChange = (event) => {
-    const newDistrictsSelectedValue = event.target.value;
-    setDistrictsSelected(newDistrictsSelectedValue);
+  const loadFreshData = (districtsList, duration) => {
+    resetValuesOnDistrictChange();
     new Promise(async (resolve) => {
-      const [rawCenterData, newVaccines, newAgeGroups, modifiedCenters] = await fetchCenters(newDistrictsSelectedValue, durationSelected);
+      const [rawCenterData, newVaccines, newAgeGroups, modifiedCenters] = await fetchCenters(districtsList, duration);
       setRawCenters(rawCenterData);
       setVaccines(newVaccines);
       setAgeGroup(newAgeGroups);
       setCenters(modifiedCenters);
       resolve();
     })
+  }
+
+  const handleDistrictChange = (event) => {
+    const newDistrictsSelectedValue = event.target.value;
+    setDistrictsSelected(newDistrictsSelectedValue);
+    loadFreshData(newDistrictsSelectedValue, durationSelected);
   };
 
   const handleVaccineChange = (event) => {
-    const newStateSelectedValue = event.target.value;
-    setVaccineSelected(newStateSelectedValue);
+    const value = event.target.value;
+    setVaccineSelected(value);
   };
 
   const handleAgeGroupChange = (event) => {
-    const newStateSelectedValue = event.target.value;
-    setAgeGroupSelected(newStateSelectedValue);
+    const value = event.target.value;
+    setAgeGroupSelected(value);
   }
 
   const handleDurationChange = (event) => {
-    const newStateSelectedValue = event.target.value;
-    setDurationSelected(newStateSelectedValue);
+    const value = event.target.value;
+    setDurationSelected(value);
+    loadFreshData(districtsSelected, value);
   }
 
   return (
