@@ -266,6 +266,7 @@ const App = () => {
                 pinned="left"
                 valueFormatter={quantityFormatter}
                 cellStyle={quantityStyle}
+                sort={'desc'}
               />
               {
                 dateMap?.map((dateItem, index) =>
