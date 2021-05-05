@@ -2,7 +2,11 @@ import React, { useEffect } from 'react';
 
 import axios from 'axios';
 
-import { makeStyles } from '@material-ui/core';
+import {
+  Checkbox,
+  ListItemText,
+  makeStyles,
+} from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -31,7 +35,7 @@ const FilterOptions = (props) => {
     states, setStates,
     stateSelected, setStateSelected,
     districts, setDistricts,
-    districtSelected, setDistrictSelected,
+    districtsSelected, setDistrictsSelected,
     setRawCenters,
     setCenters,
     vaccines, setVaccines,
@@ -60,10 +64,10 @@ const FilterOptions = (props) => {
   };
 
   const handleDistrictChange = (event) => {
-    const newDistrictSelectedValue = event.target.value;
-    setDistrictSelected(newDistrictSelectedValue);
+    const newDistrictsSelectedValue = event.target.value;
+    setDistrictsSelected(newDistrictsSelectedValue);
     new Promise(async (resolve) => {
-      const [rawCenterData, newVaccines, newAgeGroups, modifiedCenters] = await fetchCenters([newDistrictSelectedValue], durationSelected);
+      const [rawCenterData, newVaccines, newAgeGroups, modifiedCenters] = await fetchCenters(newDistrictsSelectedValue, durationSelected);
       setRawCenters(rawCenterData);
       setVaccines(newVaccines);
       setAgeGroup(newAgeGroups);
@@ -112,13 +116,28 @@ const FilterOptions = (props) => {
             <InputLabel id="demo-simple-select-outlined-label">Districts</InputLabel>
             <Select
               labelId="demo-simple-select-outlined-label"
+              multiple
               id="demo-simple-select-outlined"
-              value={districtSelected}
+              value={districtsSelected}
               onChange={handleDistrictChange}
               label="Districts"
+              renderValue={(selected) => {
+                return districts.reduce((prev, district) => {
+                  if (selected.some((item) => district.district_id === item)) {
+                    return `${prev}, ${district.district_name}`;
+                  } else {
+                    return prev;
+                  } 
+                }, '').slice(1);
+              }}
             >
               {
-                districts?.map(({ district_id, district_name }, index) => <MenuItem key={index} value={district_id}>{district_name}</MenuItem>)
+                districts?.map(({ district_id, district_name }, index) => (
+                  <MenuItem key={index} value={district_id}>
+                    <Checkbox checked={districtsSelected.indexOf(district_id) > -1} />
+                    <ListItemText primary={district_name} />
+                  </MenuItem>
+                ))
               }
             </Select>
           </FormControl> :

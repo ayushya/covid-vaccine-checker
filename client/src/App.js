@@ -20,7 +20,7 @@ const App = () => {
   const [states, setStates] =  React.useState(null);
   const [stateSelected, setStateSelected] = React.useState('');
   const [districts, setDistricts] = React.useState(null);
-  const [districtSelected, setDistrictSelected] = React.useState('');
+  const [districtsSelected, setDistrictsSelected] = React.useState([]);
   const [rawCenters, setRawCenters] = React.useState(null);
   const [centers, setCenters] = React.useState(null);
 
@@ -36,7 +36,7 @@ const App = () => {
     states, setStates,
     stateSelected, setStateSelected,
     districts, setDistricts,
-    districtSelected, setDistrictSelected,
+    districtsSelected, setDistrictsSelected,
     rawCenters, setRawCenters,
     centers, setCenters,
     vaccines, setVaccines,
