@@ -33,8 +33,8 @@ const FilterOptions = (props) => {
     stateSelected, setStateSelected,
     districts, setDistricts,
     districtSelected, setDistrictSelected,
-    rawCenters, setRawCenters,
-    centers, setCenters,
+    setRawCenters,
+    setCenters,
     vaccines, setVaccines,
     vaccineSelected, setVaccineSelected,
     ageGroup, setAgeGroup,
@@ -47,6 +47,7 @@ const FilterOptions = (props) => {
       .then((response) => {
         setStates(response.data.states);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleStateChange = (event) => {

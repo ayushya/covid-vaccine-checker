@@ -130,7 +130,6 @@ const App = () => {
                     sortable={true}
                     filter={false}
                     width={130}
-                    cellStyle={{textAlign: 'center'}}
                     valueFormatter={quantityFormatter}
                     cellStyle={quantityStyle}
                   />
