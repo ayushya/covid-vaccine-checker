@@ -11,7 +11,7 @@ export const fetchCenters = async (districtList, month) => {
       const centerRequest = axios.get(`${GET_CENTERS_BY_DISTRICT}`, {
           params: {
           district_id: districtList[districtIndex],
-          date: moment().add(week, 'days').format('DD-MM-YYYY')
+          date: moment().add(7*week, 'days').format('DD-MM-YYYY')
           }
         })
         .then((response) => response.data.centers);
