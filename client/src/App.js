@@ -137,8 +137,8 @@ const App = () => {
               enableCellTextSelection={true}
               defaultColGroupDef={{ marryChildren: true }}
               animateRows={true}
-              isExternalFilterPresent={() => true}
-              doesExternalFilterPass={rowDataFilter}
+              // isExternalFilterPresent={() => true}
+              // doesExternalFilterPass={rowDataFilter}
               tooltipShowDelay={0}
               rowData={centers}>
               <AgGridColumn field="pincode" sortable={true} filter={true} pinned="left"></AgGridColumn>
