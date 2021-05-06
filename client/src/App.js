@@ -63,10 +63,10 @@ const App = () => {
     return moment().add(index, 'days').format('DD-MM-YYYY');
   });
 
-  const rowDataFilter = (node) => {
-    const total  = node.data.availability[ageGroupSelected]?.[`${vaccineSelected}_total`];
-    return total !== undefined
-  }
+  // const rowDataFilter = (node) => {
+  //   const total  = node.data.availability[ageGroupSelected]?.[`${vaccineSelected}_total`];
+  //   return total !== undefined
+  // }
 
   const quantityRenderer = ({ value }) => {
     switch (value) {
