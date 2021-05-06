@@ -90,6 +90,22 @@ const App = () => {
     }
   }
 
+  const feeStyle = ({ value }) => {
+    const commonStyles = {
+      textAlign: 'center',
+      fontWeight: '700',
+      border: '1px solid rgb(186, 191, 199)'
+    };
+    switch (value) {
+      case 'Free': {
+        return { color: '#fff', backgroundColor: '#2196f3', ...commonStyles };
+      }
+      default: {
+        return { color: '#fff', backgroundColor: '#ff9800', ...commonStyles };
+      }
+    }
+  }
+
   return (
     <div>
       <FilterOptions {...propsToPass}/>
@@ -103,6 +119,7 @@ const App = () => {
                 // filter: 'agTextColumnFilter',
                 floatingFilter: true,
                 resizable: true,
+                suppressMovable: true
               }}
               enableCellTextSelection={true}
               defaultColGroupDef={{ marryChildren: true }}
@@ -113,7 +130,16 @@ const App = () => {
               rowData={centers}>
               <AgGridColumn field="pincode" sortable={true} filter={true} pinned="left"></AgGridColumn>
               <AgGridColumn field="name" tooltipField={"name"} sortable={true} filter={true} width={200} pinned="left"></AgGridColumn>
-              <AgGridColumn headerName="Fee" field="fee_type" sortable={true} filter={true} pinned="left"></AgGridColumn>
+              <AgGridColumn
+                headerName="Fee"
+                field="fee_type"
+                valueGetter={({ data: { fee_type, vaccine_fees}}) => vaccine_fees?.[0].fee || fee_type }
+                valueFormatter={({ data: { fee_type, vaccine_fees } }) => vaccine_fees ? `₹ ${vaccine_fees?.[0].fee}` : fee_type}
+                sortable={true}
+                filter={true}
+                pinned="left"
+                cellStyle={feeStyle}
+              />
               <AgGridColumn
                 headerName="# Total"
                 field={`availability.${ageGroupSelected}.${vaccineSelected}_total`}
@@ -136,7 +162,6 @@ const App = () => {
                     width={130}
                     valueFormatter={quantityFormatter}
                     cellStyle={quantityStyle}
-                    suppressMovable={true}
                   />
                 )
               }
