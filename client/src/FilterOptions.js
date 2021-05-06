@@ -5,6 +5,7 @@ import axios from 'axios';
 import {
   Button,
   Checkbox,
+  Icon,
   ListItemText,
   makeStyles,
 } from '@material-ui/core';
@@ -259,7 +260,7 @@ const FilterOptions = (props) => {
               onClick={() => loadFreshData()}
               style={{margin: '8px', height: '56px'}}
             >
-              Refresh Data
+              <Icon >cached</Icon>
             </Button>
           </>
           :
