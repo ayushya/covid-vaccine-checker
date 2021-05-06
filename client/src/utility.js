@@ -32,7 +32,9 @@ const formatData = (newCenters) => {
 
   const modifiedCenters = mergeDataByCenter(newCenters).map((centerItem, index) => {
     let availability = {
-      total: 0,
+      all: {
+        any_total : 0,
+      },
     };
 
     centerItem.sessions.forEach(item => {
@@ -43,17 +45,37 @@ const formatData = (newCenters) => {
       newVaccines.add(vaccineName);
       newAgeGroups.add(minAgeLimit);
 
-      availability[minAgeLimit] = {
-        ...availability[minAgeLimit],
-        [vaccineName]: {
-          ...(availability[minAgeLimit]?.[vaccineName]),
-          [item.date]: availableNow,
+      availability = {
+        ...availability,
+        [minAgeLimit]: {
+          ...availability[minAgeLimit],
+          [vaccineName]: {
+            ...(availability[minAgeLimit]?.[vaccineName]),
+            [item.date]: availableNow,
+          },
+          any: {
+            ...(availability[minAgeLimit]?.any),
+            [item.date]: availableNow,
+          }
         },
+        all: {
+          ...availability.all,
+          [vaccineName]: {
+            ...(availability.all?.[vaccineName]),
+            [item.date]: availableNow,
+          },
+          any: {
+            ...(availability.all?.any),
+            [item.date]: availableNow,
+          }
+        }
       }
 
       const vaccineTotalKey = `${vaccineName}_total`;
       availability[minAgeLimit][vaccineTotalKey] = availability[minAgeLimit][vaccineTotalKey] ? availability[minAgeLimit][vaccineTotalKey] + availableNow : availableNow;
-      availability.total += availableNow;
+      availability[minAgeLimit].any_total = availability[minAgeLimit].any_total ? availability[minAgeLimit].any_total + availableNow : availableNow;
+      availability.all[vaccineTotalKey] = availability.all[vaccineTotalKey] ? availability.all[vaccineTotalKey] + availableNow : availableNow;
+      availability.all.any_total += availableNow;
     });
     centerItem['availability'] = availability;
     return centerItem;

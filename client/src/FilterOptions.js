@@ -114,6 +114,20 @@ const FilterOptions = (props) => {
     loadFreshData(districtsSelected, value);
   }
 
+  const ageGroupMenuText = (value) => {
+    switch (value) {
+      case 18: {
+        return '18-44';
+      }
+      case 45: {
+        return '45+';
+      }
+      default: {
+        return value;
+       }
+    }
+  }
+
   return (
     <div>
       <FormControl variant="outlined" className={classes.formControl}>
@@ -177,6 +191,9 @@ const FilterOptions = (props) => {
               onChange={handleVaccineChange}
               label="Vaccines"
             >
+              <MenuItem value={DEFAULT_VACCINE}>
+                <em>Any</em>
+              </MenuItem>
               {
                 Array.from(vaccines)?.map((vaccine, index) => <MenuItem key={index} value={vaccine}>{vaccine}</MenuItem>)
               }
@@ -195,8 +212,14 @@ const FilterOptions = (props) => {
               onChange={handleAgeGroupChange}
               label="Age Group"
             >
+              <MenuItem value={DEFAULT_AGE}>
+                <em>All</em>
+              </MenuItem>
               {
-                Array.from(ageGroup)?.map((ageGroupItem, index) => <MenuItem key={index} value={ageGroupItem}>{ageGroupItem}</MenuItem>)
+                Array.from(ageGroup)?.map((ageGroupItem, index) => 
+                <MenuItem key={index} value={ageGroupItem}>
+                    {ageGroupMenuText(ageGroupItem)}
+                </MenuItem>)
               }
             </Select>
           </FormControl> :
