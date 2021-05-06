@@ -109,9 +109,10 @@ const App = () => {
               animateRows={true}
               isExternalFilterPresent={() => true}
               doesExternalFilterPass={rowDataFilter}
+              tooltipShowDelay={0}
               rowData={centers}>
               <AgGridColumn field="pincode" sortable={true} filter={true} pinned="left"></AgGridColumn>
-              <AgGridColumn field="name" sortable={true} filter={true} width={200} pinned="left"></AgGridColumn>
+              <AgGridColumn field="name" tooltipField={"name"} sortable={true} filter={true} width={200} pinned="left"></AgGridColumn>
               <AgGridColumn headerName="Fee" field="fee_type" sortable={true} filter={true} pinned="left"></AgGridColumn>
               <AgGridColumn
                 headerName="# Total"
