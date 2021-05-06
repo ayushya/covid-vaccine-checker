@@ -21,7 +21,10 @@ export const fetchCenters = async (districtList, month) => {
           }
         })
         .then((response) => response.data.centers)
-        .catch(error => alert(error));
+        .catch(error => {
+          console.log(error);
+          return [];
+        });
         promiseList.push(centerRequest);
     }
   }
