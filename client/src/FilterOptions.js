@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 
 import {
+  Button,
   Checkbox,
   ListItemText,
   makeStyles,
@@ -55,19 +56,30 @@ const FilterOptions = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+
+  // useInterval(() => {
+  //   console.log('I am here', districtsSelected.length);
+  //   if (districtsSelected.length) {
+  //     console.log('I am here too');
+  //     loadFreshData(districtsSelected, durationSelected);
+  //   }
+  // }, 5000);
+
   const resetValuesOnStateChange = () => {
     setDistricts(null);
     setDistrictsSelected([]);
     resetValuesOnDistrictChange();
   }
 
-  const resetValuesOnDistrictChange = () => {
+  const resetValuesOnDistrictChange = (resetVaccineAndAge) => {
     setRawCenters(null);
     setCenters(null);
-    setVaccines(null);
-    setVaccineSelected(DEFAULT_VACCINE);
-    setAgeGroup(null);
-    setAgeGroupSelected(DEFAULT_AGE);
+    if (resetVaccineAndAge) {
+      setVaccines(null);
+      setVaccineSelected(DEFAULT_VACCINE);
+      setAgeGroup(null);
+      setAgeGroupSelected(DEFAULT_AGE);
+    }
   }
 
   const handleStateChange = (event) => {
@@ -80,14 +92,14 @@ const FilterOptions = (props) => {
       });
   };
 
-  const loadFreshData = (districtsList, duration) => {
-    resetValuesOnDistrictChange();
+  const loadFreshData = (resetVaccineAndAge = false, districtsList = districtsSelected, duration = durationSelected) => {
+    resetValuesOnDistrictChange(resetVaccineAndAge);
     new Promise(async (resolve) => {
       const [rawCenterData, newVaccines, newAgeGroups, modifiedCenters] = await fetchCenters(districtsList, duration);
       setRawCenters(rawCenterData);
+      setCenters(modifiedCenters);
       setVaccines(newVaccines);
       setAgeGroup(newAgeGroups);
-      setCenters(modifiedCenters);
       resolve();
     })
   }
@@ -95,7 +107,7 @@ const FilterOptions = (props) => {
   const handleDistrictChange = (event) => {
     const newDistrictsSelectedValue = event.target.value;
     setDistrictsSelected(newDistrictsSelectedValue);
-    loadFreshData(newDistrictsSelectedValue, durationSelected);
+    loadFreshData(true, newDistrictsSelectedValue, durationSelected);
   };
 
   const handleVaccineChange = (event) => {
@@ -111,7 +123,7 @@ const FilterOptions = (props) => {
   const handleDurationChange = (event) => {
     const value = event.target.value;
     setDurationSelected(value);
-    loadFreshData(districtsSelected, value);
+    loadFreshData(false, districtsSelected, value);
   }
 
   const ageGroupMenuText = (value) => {
@@ -227,19 +239,30 @@ const FilterOptions = (props) => {
       }
       {
         vaccines && ageGroup ?
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel id="demo-simple-select-outlined-label">Duration</InputLabel>
-            <Select
-              labelId="demo-simple-select-outlined-label"
-              id="demo-simple-select-outlined"
-              value={durationSelected}
-              onChange={handleDurationChange}
-              label="Duration"
+          <>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel id="demo-simple-select-outlined-label">Duration</InputLabel>
+              <Select
+                labelId="demo-simple-select-outlined-label"
+                id="demo-simple-select-outlined"
+                value={durationSelected}
+                onChange={handleDurationChange}
+                label="Duration"
+              >
+                <MenuItem value="1">1 Month</MenuItem>
+                <MenuItem value="2">2 Month</MenuItem>
+              </Select>
+            </FormControl>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => loadFreshData()}
+              style={{margin: '8px', height: '56px'}}
             >
-              <MenuItem value="1">1 Month</MenuItem>
-              <MenuItem value="2">2 Month</MenuItem>
-            </Select>
-          </FormControl> :
+              Refresh Data
+            </Button>
+          </>
+          :
           null
       }
     </div>

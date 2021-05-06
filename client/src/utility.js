@@ -1,3 +1,8 @@
+import {
+  useEffect,
+  useRef,
+} from 'react';
+
 import axios from 'axios';
 import deepmerge from 'deepmerge';
 import moment from 'moment';
@@ -15,7 +20,8 @@ export const fetchCenters = async (districtList, month) => {
           date: moment().add(7*week, 'days').format('DD-MM-YYYY')
           }
         })
-        .then((response) => response.data.centers);
+        .then((response) => response.data.centers)
+        .catch(error => alert(error));
         promiseList.push(centerRequest);
     }
   }
@@ -99,4 +105,24 @@ const mergeDataByCenter = (newCenters) => {
     }
   });
   return mergedCenters;
+}
+
+export function useInterval(callback, delay) {
+  const savedCallback = useRef();
+
+  // Remember the latest function.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
 }
