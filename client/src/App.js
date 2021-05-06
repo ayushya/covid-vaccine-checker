@@ -63,10 +63,10 @@ const App = () => {
     return moment().add(index, 'days').format('DD-MM-YYYY');
   });
 
-  // const rowDataFilter = (node) => {
-  //   const total  = node.data.availability[ageGroupSelected]?.[`${vaccineSelected}_total`];
-  //   return total !== undefined
-  // }
+  const rowDataFilter = (node) => {
+    const total  = node.data.availability[ageGroupSelected]?.[`${vaccineSelected}_total`];
+    return total !== undefined
+  }
 
   const quantityRenderer = ({ value }) => {
     switch (value) {
@@ -137,8 +137,8 @@ const App = () => {
               enableCellTextSelection={true}
               defaultColGroupDef={{ marryChildren: true }}
               animateRows={true}
-              // isExternalFilterPresent={() => true}
-              // doesExternalFilterPass={rowDataFilter}
+              isExternalFilterPresent={() => true}
+              doesExternalFilterPass={rowDataFilter}
               tooltipShowDelay={0}
               rowData={centers}>
               <AgGridColumn field="pincode" sortable={true} filter={true} pinned="left"></AgGridColumn>

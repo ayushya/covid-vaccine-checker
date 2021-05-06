@@ -41,7 +41,7 @@ const FilterOptions = (props) => {
     districts, setDistricts,
     districtsSelected, setDistrictsSelected,
     setRawCenters,
-    setCenters,
+    centers, setCenters,
     vaccines, setVaccines,
     vaccineSelected, setVaccineSelected,
     ageGroup, setAgeGroup,
@@ -122,11 +122,21 @@ const FilterOptions = (props) => {
   const handleVaccineChange = (event) => {
     const value = event.target.value;
     setVaccineSelected(value);
+    const centersCopy = centers;
+    setCenters(null);
+    setTimeout(() => {
+      setCenters(centersCopy);
+    }, 0);
   };
 
   const handleAgeGroupChange = (event) => {
     const value = event.target.value;
     setAgeGroupSelected(value);
+    const centersCopy = centers;
+    setCenters(null);
+    setTimeout(() => {
+      setCenters(centersCopy);
+    }, 0);
   }
 
   const handleDurationChange = (event) => {
