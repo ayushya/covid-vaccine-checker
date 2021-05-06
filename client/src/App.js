@@ -58,20 +58,6 @@ const App = () => {
     return total !== undefined
   }
 
-  const quantityFormatter = ({value}) => {
-    switch (value) {
-      case undefined: {
-        return 'NA';
-      }
-      case 0: {
-        return 'Booked';
-      }
-      default: {
-        return value;
-      }
-    }
-  }
-
   const quantityRenderer = ({ value }) => {
     switch (value) {
       case undefined: {
