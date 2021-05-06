@@ -15,6 +15,7 @@ import {
   DEFAULT_AGE,
   DEFAULT_DURATION,
   DEFAULT_VACCINE,
+  VACCINE_REGISTRATION_URL,
 } from './constants';
 import FilterOptions from './FilterOptions';
 
@@ -71,9 +72,24 @@ const App = () => {
     }
   }
 
+  const quantityRenderer = ({ value }) => {
+    switch (value) {
+      case undefined: {
+        return 'NA';
+      }
+      case 0: {
+        return 'Booked';
+      }
+      default: {
+        return `<a href=${VACCINE_REGISTRATION_URL} target="_blank" style="color:#fff; text-decoration: none"}>${value}</a>`;
+      }
+    }
+  }
+
   const quantityStyle = ({ value }) => {
     const commonStyles = {
-      textAlign: 'center',
+      display: 'flex',
+      justifyContent: 'center',
       fontWeight: '700',
       border: '1px solid rgb(186, 191, 199)'
     };
@@ -85,14 +101,15 @@ const App = () => {
         return { color: '#fff', backgroundColor: 'rgb(220, 0, 78)', ...commonStyles };
       }
       default: {
-        return { color: '#fff', backgroundColor: '#2ecc71', ...commonStyles };
+        return { color: '#fff', backgroundColor: '#2ecc71', cursor: 'pointer', ...commonStyles };
       }
     }
   }
 
   const feeStyle = ({ value }) => {
     const commonStyles = {
-      textAlign: 'center',
+      display: 'flex',
+      justifyContent: 'center',
       fontWeight: '700',
       border: '1px solid rgb(186, 191, 199)'
     };
@@ -147,9 +164,9 @@ const App = () => {
                 filter={false}
                 width={120}
                 pinned="left"
-                valueFormatter={quantityFormatter}
                 cellStyle={quantityStyle}
                 sort={'desc'}
+                cellRenderer={quantityRenderer}
               />
               {
                 dateMap?.map((dateItem, index) =>
@@ -160,8 +177,13 @@ const App = () => {
                     sortable={true}
                     filter={false}
                     width={130}
-                    valueFormatter={quantityFormatter}
                     cellStyle={quantityStyle}
+                    cellRenderer={quantityRenderer}
+                    onCellClicked={({event, value}) => {
+                      if (value > 0) {
+                        event.target.querySelector('a')?.click();
+                      }
+                    }}
                   />
                 )
               }
