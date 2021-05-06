@@ -23,6 +23,9 @@ export const fetchCenters = async (districtList, month) => {
         .then((response) => response.data.centers)
         .catch(error => {
           console.log(error);
+          setTimeout(() => {
+            window.location.reload();
+          }, 10000);
           return [];
         });
         promiseList.push(centerRequest);
