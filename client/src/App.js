@@ -1,7 +1,7 @@
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {
   AgGridColumn,
@@ -13,7 +13,9 @@ import { CircularProgress } from '@material-ui/core';
 
 import {
   DEFAULT_AGE,
+  DEFAULT_DISTRICTS_SELECTED,
   DEFAULT_DURATION,
+  DEFAULT_STATE,
   DEFAULT_VACCINE,
   VACCINE_REGISTRATION_URL,
 } from './constants';
@@ -21,19 +23,19 @@ import FilterOptions from './FilterOptions';
 
 const App = () => {
   const [states, setStates] =  React.useState(null);
-  const [stateSelected, setStateSelected] = React.useState('');
+  const [stateSelected, setStateSelected] = React.useState(localStorage.getItem('stateSelected') || DEFAULT_STATE);
   const [districts, setDistricts] = React.useState(null);
-  const [districtsSelected, setDistrictsSelected] = React.useState([]);
+  const [districtsSelected, setDistrictsSelected] = React.useState(JSON.parse(localStorage.getItem('districtsSelected')) || DEFAULT_DISTRICTS_SELECTED);
   const [rawCenters, setRawCenters] = React.useState(null);
   const [centers, setCenters] = React.useState(null);
 
   const [vaccines, setVaccines] = React.useState(null);
-  const [vaccineSelected, setVaccineSelected] = React.useState(DEFAULT_VACCINE);
+  const [vaccineSelected, setVaccineSelected] = React.useState(localStorage.getItem('vaccineSelected') || DEFAULT_VACCINE);
 
   const [ageGroup, setAgeGroup] = React.useState(null);
-  const [ageGroupSelected, setAgeGroupSelected] = React.useState(DEFAULT_AGE);
+  const [ageGroupSelected, setAgeGroupSelected] = React.useState(localStorage.getItem('ageGroupSelected') || DEFAULT_AGE);
 
-  const [durationSelected, setDurationSelected] = React.useState(DEFAULT_DURATION);
+  const [durationSelected, setDurationSelected] = React.useState(localStorage.getItem('durationSelected') || DEFAULT_DURATION);
 
   const propsToPass = {
     states, setStates,
@@ -48,6 +50,14 @@ const App = () => {
     ageGroupSelected, setAgeGroupSelected,
     durationSelected, setDurationSelected
   };
+
+  useEffect(() => {
+    localStorage.setItem('stateSelected', stateSelected);
+    localStorage.setItem('districtsSelected', JSON.stringify(districtsSelected));
+    localStorage.setItem('vaccineSelected', vaccineSelected);
+    localStorage.setItem('ageGroupSelected', ageGroupSelected);
+    localStorage.setItem('durationSelected', durationSelected);
+  }, [stateSelected, districtsSelected, vaccineSelected, ageGroupSelected, durationSelected]);
 
   const dateMap = Array.apply(null, new Array(7 * 4 * parseInt(durationSelected))).map((curr, index) => {
     return moment().add(index, 'days').format('DD-MM-YYYY');

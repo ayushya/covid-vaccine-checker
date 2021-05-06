@@ -54,6 +54,10 @@ const FilterOptions = (props) => {
       .then((response) => {
         setStates(response.data.states);
       });
+    if (districtsSelected.length) {
+      loadDistrictData(stateSelected);
+      loadFreshData();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -69,7 +73,7 @@ const FilterOptions = (props) => {
   const resetValuesOnStateChange = () => {
     setDistricts(null);
     setDistrictsSelected([]);
-    resetValuesOnDistrictChange();
+    resetValuesOnDistrictChange(true);
   }
 
   const resetValuesOnDistrictChange = (resetVaccineAndAge) => {
@@ -87,11 +91,15 @@ const FilterOptions = (props) => {
     const newStateSelectedValue = event.target.value;
     setStateSelected(newStateSelectedValue);
     resetValuesOnStateChange();
+    loadDistrictData(newStateSelectedValue);
+  };
+
+  const loadDistrictData = (newStateSelectedValue) => {
     axios.get(`${GET_DISTRICTS}/${newStateSelectedValue}`)
       .then((response) => {
         setDistricts(response.data.districts);
       });
-  };
+  }
 
   const loadFreshData = (resetVaccineAndAge = false, districtsList = districtsSelected, duration = durationSelected) => {
     resetValuesOnDistrictChange(resetVaccineAndAge);
