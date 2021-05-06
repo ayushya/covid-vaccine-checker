@@ -6,6 +6,9 @@
 ## Live Site
 [https://ayushya.github.io/covid-vaccine-checker/](https://ayushya.github.io/covid-vaccine-checker/)
 
+## Demo
+![Demo](https://github.com/ayushya/covid-vaccine-checker/blob/master/findCovidSlot.gif?raw=true)
+
 ## Installing the App
 
 ### `npm install`
