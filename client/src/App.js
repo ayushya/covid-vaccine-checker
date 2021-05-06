@@ -104,6 +104,7 @@ const App = () => {
                 floatingFilter: true,
                 resizable: true,
               }}
+              enableCellTextSelection={true}
               defaultColGroupDef={{ marryChildren: true }}
               animateRows={true}
               isExternalFilterPresent={() => true}
