@@ -134,6 +134,7 @@ const App = () => {
                     width={130}
                     valueFormatter={quantityFormatter}
                     cellStyle={quantityStyle}
+                    suppressMovable={true}
                   />
                 )
               }
