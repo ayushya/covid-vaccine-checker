@@ -310,7 +310,7 @@ const FilterOptions = (props) => {
                 setTimeRemaining(0);
                 loadFreshData();
               }}
-              style={{margin: '8px', height: '56px', minWidth: '130px'}}
+              style={{margin: '8px', height: '56px', minWidth: '152px'}}
             >
               <Icon >cached</Icon>
               <div>&nbsp; {getTimeRemainingText()}</div>
