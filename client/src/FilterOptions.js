@@ -191,7 +191,7 @@ const FilterOptions = (props) => {
   }
 
   return (
-    <div>
+    <div style={{display: 'flex', overflowX: 'auto'}}>
       <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel id="demo-simple-select-outlined-label">States</InputLabel>
         <Select
@@ -310,7 +310,7 @@ const FilterOptions = (props) => {
                 setTimeRemaining(0);
                 loadFreshData();
               }}
-              style={{margin: '8px', height: '56px'}}
+              style={{margin: '8px', height: '56px', minWidth: '130px'}}
             >
               <Icon >cached</Icon>
               <div>&nbsp; {getTimeRemainingText()}</div>

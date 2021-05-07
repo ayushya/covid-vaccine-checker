@@ -157,8 +157,8 @@ const App = () => {
               onGridReady={onGridReady}
               tooltipShowDelay={0}
               rowData={centers}>
-              <AgGridColumn field="pincode" sortable={true} filter={true} pinned="left"></AgGridColumn>
-              <AgGridColumn field="name" tooltipField={"name"} sortable={true} filter={true} width={200} pinned="left"></AgGridColumn>
+              <AgGridColumn field="pincode" sortable={true} filter={true}></AgGridColumn>
+              <AgGridColumn field="name" tooltipField={"name"} sortable={true} filter={true} width={200} ></AgGridColumn>
               <AgGridColumn
                 headerName="Fee"
                 field="fee_type"
@@ -166,7 +166,6 @@ const App = () => {
                 valueFormatter={({ data: { fee_type, vaccine_fees } }) => vaccine_fees ? `₹ ${vaccine_fees?.[0].fee}` : fee_type}
                 sortable={true}
                 filter={true}
-                pinned="left"
                 cellStyle={feeStyle}
               />
               <AgGridColumn
@@ -175,7 +174,6 @@ const App = () => {
                 sortable={true}
                 filter={false}
                 width={120}
-                pinned="left"
                 cellStyle={quantityStyle}
                 sort={'desc'}
                 cellRenderer={quantityRenderer}
