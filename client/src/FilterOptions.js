@@ -46,7 +46,9 @@ const FilterOptions = (props) => {
     vaccineSelected, setVaccineSelected,
     ageGroup, setAgeGroup,
     ageGroupSelected, setAgeGroupSelected,
-    durationSelected, setDurationSelected
+    durationSelected, setDurationSelected,
+    gridApi,
+    setFilterDataModel,
   } = props;
 
   useEffect(() => {
@@ -70,6 +72,11 @@ const FilterOptions = (props) => {
   //   }
   // }, 5000);
 
+  const saveFilterModel = () => {
+    const currentFilterModel = gridApi?.getFilterModel() || {};
+    setFilterDataModel(currentFilterModel);
+  }
+
   const resetValuesOnStateChange = () => {
     setDistricts(null);
     setDistrictsSelected([]);
@@ -77,6 +84,7 @@ const FilterOptions = (props) => {
   }
 
   const resetValuesOnDistrictChange = (resetVaccineAndAge) => {
+    saveFilterModel();
     setRawCenters(null);
     setCenters(null);
     if (resetVaccineAndAge) {
@@ -120,6 +128,7 @@ const FilterOptions = (props) => {
   };
 
   const handleVaccineChange = (event) => {
+    saveFilterModel();
     const value = event.target.value;
     setVaccineSelected(value);
     const centersCopy = centers;
@@ -130,6 +139,7 @@ const FilterOptions = (props) => {
   };
 
   const handleAgeGroupChange = (event) => {
+    saveFilterModel();
     const value = event.target.value;
     setAgeGroupSelected(value);
     const centersCopy = centers;

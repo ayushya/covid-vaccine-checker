@@ -37,6 +37,10 @@ const App = () => {
 
   const [durationSelected, setDurationSelected] = React.useState(localStorage.getItem('durationSelected') || DEFAULT_DURATION);
 
+  const [gridApi, setGridApi] = React.useState(null);
+
+  const [filterDataModel, setFilterDataModel] = React.useState(JSON.parse(localStorage.getItem('filterDataModel')) || {});
+
   const propsToPass = {
     states, setStates,
     stateSelected, setStateSelected,
@@ -48,7 +52,9 @@ const App = () => {
     vaccineSelected, setVaccineSelected,
     ageGroup, setAgeGroup,
     ageGroupSelected, setAgeGroupSelected,
-    durationSelected, setDurationSelected
+    durationSelected, setDurationSelected,
+    gridApi, setGridApi,
+    filterDataModel, setFilterDataModel,
   };
 
   useEffect(() => {
@@ -57,11 +63,20 @@ const App = () => {
     localStorage.setItem('vaccineSelected', vaccineSelected);
     localStorage.setItem('ageGroupSelected', ageGroupSelected);
     localStorage.setItem('durationSelected', durationSelected);
-  }, [stateSelected, districtsSelected, vaccineSelected, ageGroupSelected, durationSelected]);
+    localStorage.setItem('filterDataModel', JSON.stringify(filterDataModel));
+    setTimeout(() => {
+      gridApi?.setFilterModel(filterDataModel);
+    }, 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stateSelected, districtsSelected, vaccineSelected, ageGroupSelected, durationSelected, gridApi]);
 
   const dateMap = Array.apply(null, new Array(7 * 4 * parseInt(durationSelected))).map((curr, index) => {
     return moment().add(index, 'days').format('DD-MM-YYYY');
   });
+
+  const onGridReady = (params) => {
+    setGridApi(params.api);
+  }
 
   const rowDataFilter = (node) => {
     const total  = node.data.availability[ageGroupSelected]?.[`${vaccineSelected}_total`];
@@ -139,6 +154,7 @@ const App = () => {
               animateRows={true}
               isExternalFilterPresent={() => true}
               doesExternalFilterPass={rowDataFilter}
+              onGridReady={onGridReady}
               tooltipShowDelay={0}
               rowData={centers}>
               <AgGridColumn field="pincode" sortable={true} filter={true} pinned="left"></AgGridColumn>
