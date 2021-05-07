@@ -34,3 +34,9 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
+
+
+### Additional resources
+
+[API Docs](https://apisetu.gov.in/public/marketplace/api/cowin/cowin-public-v2)
+[API Dev Github](https://github.com/cowinapi/developer.cowin)
