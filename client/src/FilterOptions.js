@@ -306,7 +306,10 @@ const FilterOptions = (props) => {
             <Button
               variant="outlined"
               color="primary"
-              onClick={() => loadFreshData()}
+              onClick={() => {
+                setTimeRemaining(0);
+                loadFreshData();
+              }}
               style={{margin: '8px', height: '56px'}}
             >
               <Icon >cached</Icon>
