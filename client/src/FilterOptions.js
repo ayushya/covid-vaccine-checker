@@ -19,8 +19,12 @@ import {
   DEFAULT_VACCINE,
   GET_DISTRICTS,
   GET_STATES,
+  REFRESH_INTERVAL,
 } from './constants';
-import { fetchCenters } from './utility';
+import {
+  fetchCenters,
+  useInterval,
+} from './utility';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -51,6 +55,8 @@ const FilterOptions = (props) => {
     setFilterDataModel,
   } = props;
 
+  const [timeRemaining, setTimeRemaining] = React.useState(REFRESH_INTERVAL);
+
   useEffect(() => {
     axios.get(GET_STATES)
       .then((response) => {
@@ -63,14 +69,17 @@ const FilterOptions = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
-  // useInterval(() => {
-  //   console.log('I am here', districtsSelected.length);
-  //   if (districtsSelected.length) {
-  //     console.log('I am here too');
-  //     loadFreshData(districtsSelected, durationSelected);
-  //   }
-  // }, 5000);
+  useInterval(() => {
+    const newTimeRemaining = timeRemaining - 1;
+    if (newTimeRemaining === 0) {
+      if (districtsSelected.length) {
+        loadFreshData();
+      }
+    }
+    if (newTimeRemaining >= 0) {
+      setTimeRemaining(newTimeRemaining);
+    }
+  }, 1000);
 
   const saveFilterModel = () => {
     const currentFilterModel = gridApi?.getFilterModel() || {};
@@ -117,6 +126,7 @@ const FilterOptions = (props) => {
       setCenters(modifiedCenters);
       setVaccines(newVaccines);
       setAgeGroup(newAgeGroups);
+      setTimeRemaining(REFRESH_INTERVAL)
       resolve();
     })
   }
@@ -166,6 +176,17 @@ const FilterOptions = (props) => {
       default: {
         return value;
        }
+    }
+  }
+
+  const getTimeRemainingText = () => {
+    switch (timeRemaining) {
+      case 0: {
+        return 'Refreshing'
+      }
+      default: {
+        return `in ${timeRemaining} s`;
+      }
     }
   }
 
@@ -289,6 +310,7 @@ const FilterOptions = (props) => {
               style={{margin: '8px', height: '56px'}}
             >
               <Icon >cached</Icon>
+              <div>&nbsp; {getTimeRemainingText()}</div>
             </Button>
           </>
           :
