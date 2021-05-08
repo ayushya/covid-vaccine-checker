@@ -57,6 +57,7 @@ const NotificationService = (props) => {
       sendNotification();
       setShouldNotify(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldNotify]);
 
   const sendNotification = () => {
