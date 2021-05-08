@@ -97,6 +97,17 @@ const App = () => {
     }
   }
 
+  const dataWithMapLinkWrapperRenderer = ({data, value}) => {
+    const {
+      address,
+      name,
+      pincode,
+    } = data;
+    const encodedData = encodeURIComponent(`${name}, ${address}, ${pincode}`);
+    const mapUrl = `http://maps.google.com/?q=${encodedData}`;
+    return `<a href=${mapUrl} target="_blank" style="color:#000; text-decoration: none"}>${value}</a>`;
+  }
+
   const quantityStyle = ({ value }) => {
     const commonStyles = {
       display: 'flex',
@@ -157,8 +168,21 @@ const App = () => {
               onGridReady={onGridReady}
               tooltipShowDelay={0}
               rowData={centers}>
-              <AgGridColumn field="pincode" sortable={true} filter={true}></AgGridColumn>
-              <AgGridColumn field="name" tooltipField={"name"} sortable={true} filter={true} width={200} ></AgGridColumn>
+              <AgGridColumn
+                field="pincode"
+                sortable={true}
+                filter={true}
+                cellRenderer={dataWithMapLinkWrapperRenderer}
+                tooltipValueGetter={() => 'Open in Google Maps'}
+              />
+              <AgGridColumn
+                field="name"
+                tooltipValueGetter={({value}) => `Where is ${value} ?`}
+                sortable={true}
+                filter={true}
+                width={200}
+                cellRenderer={dataWithMapLinkWrapperRenderer}
+              />
               <AgGridColumn
                 headerName="Fee"
                 field="fee_type"
