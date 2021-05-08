@@ -1,5 +1,6 @@
 {
   "name": "vaccine-availability-checker",
+  "homepage": "https://ayushya.github.io/covid-vaccine-checker/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -34,7 +35,7 @@
     "start": "react-scripts start",
     "build-app": "react-scripts build",
     "fix-static-files-path": "./fix-static-files.sh",
-    "build": "npm run build-app && npm run fix-static-files-path",
+    "build": "npm run build-app",
     "predeploy": "npm run build",
     "eject": "react-scripts eject"
   },
