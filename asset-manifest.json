@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/covid-vaccine-checker/static/css/main.6dea0f05.chunk.css",
-    "main.js": "/covid-vaccine-checker/static/js/main.274aa834.chunk.js",
-    "main.js.map": "/covid-vaccine-checker/static/js/main.274aa834.chunk.js.map",
+    "main.js": "/covid-vaccine-checker/static/js/main.35b07dfd.chunk.js",
+    "main.js.map": "/covid-vaccine-checker/static/js/main.35b07dfd.chunk.js.map",
     "runtime-main.js": "/covid-vaccine-checker/static/js/runtime-main.f4b2aceb.js",
     "runtime-main.js.map": "/covid-vaccine-checker/static/js/runtime-main.f4b2aceb.js.map",
     "static/css/2.3d5167d2.chunk.css": "/covid-vaccine-checker/static/css/2.3d5167d2.chunk.css",
@@ -22,6 +22,6 @@
     "static/css/2.3d5167d2.chunk.css",
     "static/js/2.ab172361.chunk.js",
     "static/css/main.6dea0f05.chunk.css",
-    "static/js/main.274aa834.chunk.js"
+    "static/js/main.35b07dfd.chunk.js"
   ]
 }
