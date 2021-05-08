@@ -21,6 +21,7 @@ import {
   GET_STATES,
   REFRESH_INTERVAL,
 } from './constants';
+import NotificationService from './NotificationService';
 import {
   fetchCenters,
   useInterval,
@@ -56,6 +57,12 @@ const FilterOptions = (props) => {
   } = props;
 
   const [timeRemaining, setTimeRemaining] = React.useState(REFRESH_INTERVAL);
+  const [shouldNotify, setShouldNotify] = React.useState(false);
+
+  const propsToPass = {
+    ...props,
+    shouldNotify, setShouldNotify,
+  };
 
   useEffect(() => {
     axios.get(GET_STATES)
@@ -73,7 +80,7 @@ const FilterOptions = (props) => {
     const newTimeRemaining = timeRemaining - 1;
     if (newTimeRemaining === 0) {
       if (districtsSelected.length) {
-        loadFreshData();
+        loadFreshData(true);
       }
     }
     if (newTimeRemaining >= 0) {
@@ -118,7 +125,7 @@ const FilterOptions = (props) => {
       });
   }
 
-  const loadFreshData = (resetVaccineAndAge = false, districtsList = districtsSelected, duration = durationSelected) => {
+  const loadFreshData = (shouldNotifyIfSlotsAvailable = false, resetVaccineAndAge = false, districtsList = districtsSelected, duration = durationSelected) => {
     resetValuesOnDistrictChange(resetVaccineAndAge);
     new Promise(async (resolve) => {
       const [rawCenterData, newVaccines, newAgeGroups, modifiedCenters] = await fetchCenters(districtsList, duration);
@@ -126,7 +133,10 @@ const FilterOptions = (props) => {
       setCenters(modifiedCenters);
       setVaccines(newVaccines);
       setAgeGroup(newAgeGroups);
-      setTimeRemaining(REFRESH_INTERVAL)
+      setTimeRemaining(REFRESH_INTERVAL);
+      if (shouldNotifyIfSlotsAvailable) {
+        setShouldNotify(true);
+      }
       resolve();
     })
   }
@@ -134,7 +144,7 @@ const FilterOptions = (props) => {
   const handleDistrictChange = (event) => {
     const newDistrictsSelectedValue = event.target.value;
     setDistrictsSelected(newDistrictsSelectedValue);
-    loadFreshData(true, newDistrictsSelectedValue, durationSelected);
+    loadFreshData(false, true, newDistrictsSelectedValue, durationSelected);
   };
 
   const handleVaccineChange = (event) => {
@@ -162,7 +172,7 @@ const FilterOptions = (props) => {
   const handleDurationChange = (event) => {
     const value = event.target.value;
     setDurationSelected(value);
-    loadFreshData(false, districtsSelected, value);
+    loadFreshData(false, false, districtsSelected, value);
   }
 
   const ageGroupMenuText = (value) => {
@@ -191,7 +201,7 @@ const FilterOptions = (props) => {
   }
 
   return (
-    <div style={{display: 'flex', overflowX: 'auto'}}>
+    <div style={{display: 'flex', overflowX: 'auto', marginRight: '8px'}}>
       <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel id="demo-simple-select-outlined-label">States</InputLabel>
         <Select
@@ -315,6 +325,7 @@ const FilterOptions = (props) => {
               <Icon >cached</Icon>
               <div>&nbsp; {getTimeRemainingText()}</div>
             </Button>
+            <NotificationService {...propsToPass} />
           </>
           :
           null

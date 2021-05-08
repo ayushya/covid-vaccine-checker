@@ -132,3 +132,15 @@ export function useInterval(callback, delay) {
     }
   }, [delay]);
 }
+
+export const getNotificationBody = (newAvailableVaccineCenters) => {
+  return newAvailableVaccineCenters.reduce((prev, curr) => {
+    const {
+      total,
+      centerName,
+      pincode,
+    } = curr.notification;
+    const newVaccineEntry = `\nCenter: ${centerName}\nPincode: ${pincode}\nSlots Available: ${total}\n`;
+    return prev + newVaccineEntry;
+  }, '');
+}
