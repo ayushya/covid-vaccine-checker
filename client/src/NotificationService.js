@@ -28,7 +28,7 @@ const NotificationService = (props) => {
   }, [isNotificationEnabled]);
 
   useEffect(() => {
-    const newAvailableVaccineCenters = centers?.reduce((prev, curr) => {
+    let newAvailableVaccineCenters = centers?.reduce((prev, curr) => {
       const totalAvailableVaccines = curr?.availability?.[ageGroupSelected]?.[`${vaccineSelected}_total`];
       if (totalAvailableVaccines) {
         const notification = {
@@ -41,6 +41,8 @@ const NotificationService = (props) => {
       }
       return prev;
     }, []);
+
+    newAvailableVaccineCenters = newAvailableVaccineCenters?.sort(({ notification: { total: a } }, { notification: { total: b }}) => b - a);
 
     setAvailableVaccineCenters(newAvailableVaccineCenters || []);
     // eslint-disable-next-line react-hooks/exhaustive-deps
