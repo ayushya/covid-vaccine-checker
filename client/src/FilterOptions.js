@@ -19,7 +19,7 @@ import {
   DEFAULT_VACCINE,
   GET_DISTRICTS,
   GET_STATES,
-  REFRESH_INTERVAL,
+  getRefreshInterval,
 } from './constants';
 import NotificationService from './NotificationService';
 import {
@@ -56,7 +56,7 @@ const FilterOptions = (props) => {
     setFilterDataModel,
   } = props;
 
-  const [timeRemaining, setTimeRemaining] = React.useState(REFRESH_INTERVAL);
+  const [timeRemaining, setTimeRemaining] = React.useState(getRefreshInterval());
   const [shouldNotify, setShouldNotify] = React.useState(false);
 
   const propsToPass = {
@@ -133,7 +133,7 @@ const FilterOptions = (props) => {
       setCenters(modifiedCenters);
       setVaccines(newVaccines);
       setAgeGroup(newAgeGroups);
-      setTimeRemaining(REFRESH_INTERVAL);
+      setTimeRemaining(getRefreshInterval());
       if (shouldNotifyIfSlotsAvailable) {
         setShouldNotify(true);
       }
