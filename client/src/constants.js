@@ -29,11 +29,11 @@ export const REFRESH_INTERVAL_FAST = 60;
 export const DEFAULT_NOTIFICATION_ENABLED = false;
 
 export const getCentersByDistrict = () => {
-    const parsed = queryString.parse(location.search);
+    const parsed = queryString.parse(window.location.search);
     return parsed.godMode ? GET_CENTERS_BY_DISTRICT_ADMIN : GET_CENTERS_BY_DISTRICT;
 }
 
 export const getRefreshInterval = () => {
-    const parsed = queryString.parse(location.search);
+    const parsed = queryString.parse(window.location.search);
     return parsed.godMode ? REFRESH_INTERVAL_FAST : REFRESH_INTERVAL;
 }
