@@ -7,14 +7,14 @@ import axios from 'axios';
 import deepmerge from 'deepmerge';
 import moment from 'moment';
 
-const { GET_CENTERS_BY_DISTRICT, REFRESH_INTERVAL } = require("./constants");
+const { getCentersByDistrict, getRefreshInterval } = require("./constants");
 
 export const fetchCenters = async (districtList, month) => {
   const promiseList = [];
 
   for(let districtIndex = 0; districtIndex < districtList.length; districtIndex++) {
     for(let week = 0; week < 4*month; week++) {
-      const centerRequest = axios.get(`${GET_CENTERS_BY_DISTRICT}`, {
+      const centerRequest = axios.get(`${getCentersByDistrict()}`, {
           params: {
           district_id: districtList[districtIndex],
           date: moment().add(7*week, 'days').format('DD-MM-YYYY')
@@ -25,7 +25,7 @@ export const fetchCenters = async (districtList, month) => {
           console.log(error);
           setTimeout(() => {
             window.location.reload();
-          }, REFRESH_INTERVAL*1000);
+          }, getRefreshInterval()*1000);
           return [];
         });
         promiseList.push(centerRequest);
