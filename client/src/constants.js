@@ -27,9 +27,9 @@ export const REFRESH_INTERVAL_FAST = 10;
 export const DEFAULT_NOTIFICATION_ENABLED = false;
 
 export const getCentersByDistrict = () => {
-    return localStorage.getItem('godMode') == 'true' ? GET_CENTERS_BY_DISTRICT_ADMIN : GET_CENTERS_BY_DISTRICT;
+    return localStorage.getItem('godMode') === 'true' ? GET_CENTERS_BY_DISTRICT_ADMIN : GET_CENTERS_BY_DISTRICT;
 }
 
 export const getRefreshInterval = () => {
-    return localStorage.getItem('godMode') == 'true' ? REFRESH_INTERVAL_FAST : REFRESH_INTERVAL;
+    return localStorage.getItem('godMode') === 'true' ? REFRESH_INTERVAL_FAST : REFRESH_INTERVAL;
 }
