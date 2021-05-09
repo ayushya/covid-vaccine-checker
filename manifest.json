@@ -1,6 +1,6 @@
 {
-  "short_name": "Find Vaccine",
-  "name": "Vaccine Availability Checker",
+  "short_name": "Covid Vaccine Checker",
+  "name": "Covid-19 Vaccine Availability Checker",
   "icons": [
     {
       "src": "favicon.ico",
