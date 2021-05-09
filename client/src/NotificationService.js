@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 
+import queryString from 'query-string';
+
 import {
   Button,
   Icon,
@@ -52,6 +54,10 @@ const NotificationService = (props) => {
     navigator.serviceWorker.ready.then((registration) => {
       setSwRegistration(registration);
     });
+    const parsed = queryString.parse(window.location.search);
+    if (parsed.godMode !== undefined) {
+      localStorage.setItem('godMode', parsed.godMode);
+    }
   }, []);
 
   useEffect(() => {

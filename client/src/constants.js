@@ -1,5 +1,3 @@
-import queryString from 'query-string';
-
 export const VACCINE_REGISTRATION_URL = 'https://selfregistration.cowin.gov.in/';
 
 export const SERVER_API_URL = 'https://cdn-api.co-vin.in/api/v2';
@@ -29,11 +27,9 @@ export const REFRESH_INTERVAL_FAST = 10;
 export const DEFAULT_NOTIFICATION_ENABLED = false;
 
 export const getCentersByDistrict = () => {
-    const parsed = queryString.parse(window.location.search);
-    return parsed.godMode ? GET_CENTERS_BY_DISTRICT_ADMIN : GET_CENTERS_BY_DISTRICT;
+    return localStorage.getItem('godMode') == 'true' ? GET_CENTERS_BY_DISTRICT_ADMIN : GET_CENTERS_BY_DISTRICT;
 }
 
 export const getRefreshInterval = () => {
-    const parsed = queryString.parse(window.location.search);
-    return parsed.godMode ? REFRESH_INTERVAL_FAST : REFRESH_INTERVAL;
+    return localStorage.getItem('godMode') == 'true' ? REFRESH_INTERVAL_FAST : REFRESH_INTERVAL;
 }
