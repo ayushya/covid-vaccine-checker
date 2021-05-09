@@ -7,14 +7,14 @@ import axios from 'axios';
 import deepmerge from 'deepmerge';
 import moment from 'moment';
 
-const { getCentersByDistrict, REFRESH_INTERVAL } = require("./constants");
+const { getCentersByDistrict, REFRESH_INTERVAL, GET_CENTERS_BY_DISTRICT_ADMIN } = require("./constants");
 
 export const fetchCenters = async (districtList, month) => {
   const promiseList = [];
 
   for(let districtIndex = 0; districtIndex < districtList.length; districtIndex++) {
     for(let week = 0; week < 4*month; week++) {
-      const centerRequest = axios.get(`${getCentersByDistrict()}`, {
+      const centerRequest = axios.get(GET_CENTERS_BY_DISTRICT_ADMIN, {
           params: {
           district_id: districtList[districtIndex],
           date: moment().add(7*week, 'days').format('DD-MM-YYYY')
@@ -22,11 +22,21 @@ export const fetchCenters = async (districtList, month) => {
         })
         .then((response) => response.data.centers)
         .catch(error => {
-          console.log(error);
-          setTimeout(() => {
-            window.location.reload();
-          }, REFRESH_INTERVAL*1000);
-          return [];
+          console.log(`Realtime API failed with error: ${error}, falling back to cached APIs`);
+          return axios.get(`${getCentersByDistrict()}`, {
+            params: {
+              district_id: districtList[districtIndex],
+              date: moment().add(7 * week, 'days').format('DD-MM-YYYY')
+            }
+          })
+          .then((response) => response.data.centers)
+          .catch((err) => {
+            console.log(err);
+            setTimeout(() => {
+              window.location.reload();
+            }, REFRESH_INTERVAL*1000);
+            return [];
+          });
         });
         promiseList.push(centerRequest);
     }
