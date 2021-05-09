@@ -24,7 +24,7 @@ export const DEFAULT_DURATION = 1;
 
 export const REFRESH_INTERVAL = 300;
 
-export const REFRESH_INTERVAL_FAST = 60;
+export const REFRESH_INTERVAL_FAST = 10;
 
 export const DEFAULT_NOTIFICATION_ENABLED = false;
 
