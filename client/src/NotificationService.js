@@ -20,7 +20,7 @@ const NotificationService = (props) => {
     shouldNotify, setShouldNotify,
   } = props;
 
-  const [isNotificationEnabled, setIsNotificationEnabled] = React.useState((localStorage.getItem('isNotificationEnabled') == "true") || DEFAULT_NOTIFICATION_ENABLED);
+  const [isNotificationEnabled, setIsNotificationEnabled] = React.useState((localStorage.getItem('isNotificationEnabled') === "true") || DEFAULT_NOTIFICATION_ENABLED);
   const [swRegistration, setSwRegistration] = React.useState(null); 
   const [availableVaccineCenters, setAvailableVaccineCenters] = React.useState([]);
 
