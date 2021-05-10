@@ -51,7 +51,7 @@ const NotificationService = (props) => {
   }, [centers, vaccineSelected, ageGroupSelected, filterDataModel]);
 
   useEffect(() => {
-    navigator.serviceWorker.ready.then((registration) => {
+    window.navigator?.serviceWorker?.ready.then((registration) => {
       setSwRegistration(registration);
     });
     const parsed = queryString.parse(window.location.search);
@@ -91,7 +91,7 @@ const NotificationService = (props) => {
   }
 
   const getNotificationButtonContent = () => {
-    const notificationPermissionState = Notification?.permission;
+    const notificationPermissionState = window.Notification?.permission;
     if (notificationPermissionState === "denied") {
       return (
         <>
@@ -127,7 +127,7 @@ const NotificationService = (props) => {
   }
 
   const handleNotificationButtonClick = async () => {
-    const notificationPermissionState = Notification?.permission;
+    const notificationPermissionState = window.Notification?.permission;
     switch (true) {
       case notificationPermissionState === 'denied': {
         alert('Enable Notifications from browser\'s Site Settings.\nGoogle Search: "Learn how to unblock notifications on browser"');
@@ -138,9 +138,9 @@ const NotificationService = (props) => {
         return;
       }
       case notificationPermissionState === 'default': {
-        let newState = await Notification.requestPermission();
+        let newState = await window.Notification.requestPermission();
         if (newState === 'granted') {
-          navigator.serviceWorker.ready.then((registration) => {
+          window.navigator?.serviceWorker?.ready.then((registration) => {
             registration.showNotification('You will receive a notification similar to this when a vaccine is available.');
             setSwRegistration(registration);
             setIsNotificationEnabled(true);
