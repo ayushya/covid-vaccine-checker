@@ -5,7 +5,9 @@ import axios from 'axios';
 import {
   Button,
   Checkbox,
+  Fab,
   Icon,
+  Link,
   ListItemText,
   makeStyles,
 } from '@material-ui/core';
@@ -326,6 +328,16 @@ const FilterOptions = (props) => {
               <div>&nbsp; {getTimeRemainingText()}</div>
             </Button>
             <NotificationService {...propsToPass} />
+            <Link
+              href="https://www.notion.so/Covid-Vaccine-Checker-9f555f4295764092a4d28e207e60e392"
+              target="_blank"
+              style={{alignSelf: 'center', textDecoration: 'none', minWidth: '156px'}}
+            >
+              <Fab variant="extended">
+                Usage guide &nbsp;
+                <Icon>help_outline</Icon>
+              </Fab>
+            </Link>
           </>
           :
           null
