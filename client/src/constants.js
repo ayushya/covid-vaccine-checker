@@ -20,7 +20,7 @@ export const DEFAULT_AGE = 'all';
 
 export const DEFAULT_DURATION = 1;
 
-export const REFRESH_INTERVAL = 300;
+export const REFRESH_INTERVAL = 60;
 
 export const REFRESH_INTERVAL_FAST = 10;
 
