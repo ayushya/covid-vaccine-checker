@@ -128,7 +128,9 @@ self.addEventListener('notificationclick', function (event) {
     return;
   }
 
-  if (options.action == 'default' || options.action == 'focus-only') {
+ if (event.action == 'external-navigation') {
+    promise = promise.then(function () { clients.openWindow(options.externalUrl); });
+  } else if (options.action == 'default' || options.action == 'focus-only') {
     promise =
       promise.then(function () { return firstWindowClient(); })
         .then(function (client) { return client.focus(); });

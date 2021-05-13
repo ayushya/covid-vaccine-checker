@@ -7,7 +7,10 @@ import {
   Icon,
 } from '@material-ui/core';
 
-import { DEFAULT_NOTIFICATION_ENABLED } from './constants';
+import {
+  DEFAULT_NOTIFICATION_ENABLED,
+  VACCINE_REGISTRATION_URL,
+} from './constants';
 import { getNotificationBody } from './utility';
 
 const NotificationService = (props) => {
@@ -71,18 +74,22 @@ const NotificationService = (props) => {
   const sendNotification = () => {
     if (isNotificationEnabled && availableVaccineCenters?.length) {
       swRegistration?.showNotification('Vaccine slots are available', {
-        // actions: [
-        //   { action: "default", title: "Open" },
-        // ],
+        actions: [
+          { action: "default", title: "Show Slots" },
+          { action: "external-navigation", title: "Book Slots" },
+        ],
         body: getNotificationBody(availableVaccineCenters),
         data: {
           options: {
             action: "default",
             close: true,
             notificationCloseEvent: false,
-            url: document.location.toString()
+            url: document.location.toString(),
+            externalUrl: VACCINE_REGISTRATION_URL,
           }
         },
+        tag: 'vaccine-availability-notification',
+        renotify: true,
         persistent: true,
         lang: "en-US",
         icon: "https://ayushya.github.io/covid-vaccine-checker/logo512.png"
