@@ -144,7 +144,7 @@ export function useInterval(callback, delay) {
 }
 
 export const getNotificationBody = (newAvailableVaccineCenters) => {
-  return newAvailableVaccineCenters.reduce((prev, curr) => {
+  return newAvailableVaccineCenters.slice(0, 2).reduce((prev, curr) => {
     const {
       total,
       centerName,
