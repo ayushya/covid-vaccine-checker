@@ -14,6 +14,7 @@ import { CircularProgress } from '@material-ui/core';
 import {
   DEFAULT_AGE,
   DEFAULT_DISTRICTS_SELECTED,
+  DEFAULT_DOSE,
   DEFAULT_DURATION,
   DEFAULT_STATE,
   DEFAULT_VACCINE,
@@ -35,6 +36,8 @@ const App = () => {
   const [ageGroup, setAgeGroup] = React.useState(null);
   const [ageGroupSelected, setAgeGroupSelected] = React.useState(localStorage.getItem('ageGroupSelected') || DEFAULT_AGE);
 
+  const [doseSelected, setDoseSelected] = React.useState(localStorage.getItem('doseSelected') || DEFAULT_DOSE);
+
   const [durationSelected, setDurationSelected] = React.useState(localStorage.getItem('durationSelected') || DEFAULT_DURATION);
 
   const [gridApi, setGridApi] = React.useState(null);
@@ -52,6 +55,7 @@ const App = () => {
     vaccineSelected, setVaccineSelected,
     ageGroup, setAgeGroup,
     ageGroupSelected, setAgeGroupSelected,
+    doseSelected, setDoseSelected,
     durationSelected, setDurationSelected,
     gridApi, setGridApi,
     filterDataModel, setFilterDataModel,
@@ -62,13 +66,14 @@ const App = () => {
     localStorage.setItem('districtsSelected', JSON.stringify(districtsSelected));
     localStorage.setItem('vaccineSelected', vaccineSelected);
     localStorage.setItem('ageGroupSelected', ageGroupSelected);
+    localStorage.setItem('doseSelected', doseSelected);
     localStorage.setItem('durationSelected', durationSelected);
     localStorage.setItem('filterDataModel', JSON.stringify(filterDataModel));
     setTimeout(() => {
       gridApi?.setFilterModel(filterDataModel);
     }, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stateSelected, districtsSelected, vaccineSelected, ageGroupSelected, durationSelected, gridApi]);
+  }, [stateSelected, districtsSelected, vaccineSelected, ageGroupSelected, doseSelected, durationSelected, gridApi]);
 
   const dateMap = Array.apply(null, new Array(7 * 4 * parseInt(durationSelected))).map((curr, index) => {
     return moment().add(index, 'days').format('DD-MM-YYYY');

@@ -53,6 +53,7 @@ const FilterOptions = (props) => {
     vaccineSelected, setVaccineSelected,
     ageGroup, setAgeGroup,
     ageGroupSelected, setAgeGroupSelected,
+    doseSelected, setDoseSelected,
     durationSelected, setDurationSelected,
     gridApi,
     setFilterDataModel,
@@ -127,10 +128,16 @@ const FilterOptions = (props) => {
       });
   }
 
-  const loadFreshData = (shouldNotifyIfSlotsAvailable = false, resetVaccineAndAge = false, districtsList = districtsSelected, duration = durationSelected) => {
+  const loadFreshData = (
+    shouldNotifyIfSlotsAvailable = false,
+    resetVaccineAndAge = false,
+    districtsList = districtsSelected,
+    dose = doseSelected,
+    duration = durationSelected,
+  ) => {
     resetValuesOnDistrictChange(resetVaccineAndAge);
     new Promise(async (resolve) => {
-      const [rawCenterData, newVaccines, newAgeGroups, modifiedCenters] = await fetchCenters(districtsList, duration);
+      const [rawCenterData, newVaccines, newAgeGroups, modifiedCenters] = await fetchCenters(districtsList, duration, dose);
       setRawCenters(rawCenterData);
       setCenters(modifiedCenters);
       setVaccines(newVaccines);
@@ -146,7 +153,7 @@ const FilterOptions = (props) => {
   const handleDistrictChange = (event) => {
     const newDistrictsSelectedValue = event.target.value;
     setDistrictsSelected(newDistrictsSelectedValue);
-    loadFreshData(false, true, newDistrictsSelectedValue, durationSelected);
+    loadFreshData(false, true, newDistrictsSelectedValue);
   };
 
   const handleVaccineChange = (event) => {
@@ -171,10 +178,16 @@ const FilterOptions = (props) => {
     }, 0);
   }
 
+  const handleDoseChange = (event) => {
+    const value = event.target.value;
+    setDoseSelected(value);
+    loadFreshData(false, false, districtsSelected, value);
+  }
+
   const handleDurationChange = (event) => {
     const value = event.target.value;
     setDurationSelected(value);
-    loadFreshData(false, false, districtsSelected, value);
+    loadFreshData(false, false, districtsSelected, doseSelected, value);
   }
 
   const ageGroupMenuText = (value) => {
@@ -302,6 +315,19 @@ const FilterOptions = (props) => {
       {
         vaccines && ageGroup ?
           <>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel id="demo-simple-select-outlined-label">Dose</InputLabel>
+              <Select
+                labelId="demo-simple-select-outlined-label"
+                id="demo-simple-select-outlined"
+                value={doseSelected}
+                onChange={handleDoseChange}
+                label="Dose"
+              >
+                <MenuItem value="1">1st Dose</MenuItem>
+                <MenuItem value="2">2nd Dose</MenuItem>
+              </Select>
+            </FormControl>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel id="demo-simple-select-outlined-label">Duration</InputLabel>
               <Select

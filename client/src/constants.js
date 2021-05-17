@@ -18,6 +18,8 @@ export const DEFAULT_VACCINE = 'any';
 
 export const DEFAULT_AGE = 'all';
 
+export const DEFAULT_DOSE = 1;
+
 export const DEFAULT_DURATION = 1;
 
 export const REFRESH_INTERVAL = 60;

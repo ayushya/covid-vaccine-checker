@@ -9,7 +9,7 @@ import moment from 'moment';
 
 const { getCentersByDistrict, REFRESH_INTERVAL, GET_CENTERS_BY_DISTRICT_ADMIN } = require("./constants");
 
-export const fetchCenters = async (districtList, month) => {
+export const fetchCenters = async (districtList, month, dose) => {
   const promiseList = [];
 
   for(let districtIndex = 0; districtIndex < districtList.length; districtIndex++) {
@@ -45,10 +45,10 @@ export const fetchCenters = async (districtList, month) => {
   const allCentersList = await Promise.all(promiseList);
   const allCenters = allCentersList.reduce((prev, curr) => [...prev, ...curr], []);
 
-  return formatData(allCenters);
+  return formatData(allCenters, dose);
 }
 
-const formatData = (newCenters) => {
+const formatData = (newCenters, dose) => {
   const newVaccines = new Set();
   const newAgeGroups = new Set();
 
@@ -61,7 +61,7 @@ const formatData = (newCenters) => {
 
     centerItem.sessions.forEach(item => {
       const minAgeLimit = item.min_age_limit;
-      const availableNow = item.available_capacity;
+      const availableNow = item[`available_capacity_dose${dose}`];
       const vaccineName = item.vaccine;
 
       newVaccines.add(vaccineName);
